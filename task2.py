@@ -9,10 +9,6 @@ class Rational:
         if not isinstance(numerator, int) or not isinstance(denominator, int):
             raise TypeError("Numerator and denominator must be integer")
 
-        if(numerator < 0 and denominator < 0):
-            numerator *= -1
-            denominator *= -1
-
         self.numerator = numerator // gcd(numerator, denominator)
         self.denominator = denominator // gcd(numerator, denominator)
 

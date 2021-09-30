@@ -39,7 +39,7 @@ print("Default length is:", rec1.length)
 print("Default width is:", rec1.width)
 print(result)
 
-print("New values length = 3.2 and width =3.8")
+print("New values length = 3.2 and width = 2.8")
 rec2 = Rectangle(3.2, 2.8)
 print("Area: ", rec2.area())
 print("Perimetr: ", rec2.perimeter())

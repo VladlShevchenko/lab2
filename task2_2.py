@@ -1,42 +1,47 @@
+import re
+
 class Text:
-    def __init__(self,text):
-        self.text = text
+    """Text class with countChar, countWords and countSentence methods"""
+    def __init__(self, filePath):
+        self.filePath = filePath
+        self.symbols = 0
+        self.words = 0
+        self.sentences = 0
 
-    def countchar(self):
-        return f'Chars {len(self.text)}'
+    def countChar(self):
+        """Function that counts amount of symbols in file"""
+        try:
+            file = open(self.filePath, 'r') 
+            for line in file:
+                self.symbols += len(line)
+            file.close()
+            return self.symbols
+        except IOError:
+            raise IOError("File is not found")
 
-    def countwords(self):
-        count = 0 
-        flag = 0
-        for i in range(len(self.text)):
-            if self.text[i] != ' ' and flag == 0:
-                count += 1
-                flag = 1
-            else:
-                if self.text[i] == ' ':
-                    flag = 0
-        return f'Words: {count}'
+    def countWords(self):
+        """Function that counts amount of words in file"""
+        try:
+            f = open(self.filePath, 'r')
+            for line in f:
+                self.words += len(line.split())
+            f.close()
+            return self.words
+        except IOError:
+            raise IOError("File is not found")
 
-    def countsent(self):
-        count = 0 
-        flag = 0
-        for i in range(len(self.text)):
-            if self.text[i] != '.' and flag == 0:
-                count += 1
-                flag = 1
-            else:
-                if self.text[i] == '.':
-                    flag = 0
-        return f'Sentences: {count}'
+    def countSentence(self):
+        """Function that counts amount of sentences in file"""
+        try:
+            f = open(self.filePath, 'r')
+            data = f.read()
+            self.sentences = len(re.split('\. |! |\? |\... ', data))
+            f.close()
+            return self.sentences
+        except IOError:
+            raise IOError("File is not found")
 
-
-
-f = open("text.txt", "r")
-data =f.read()
-f.close()
-
-x = Text(data)
-
-print(x.countwords())
-print(x.countchar())
-print(x.countsent())
+x = Text("text.txt")
+print("Words: " + str(x.countWords()))
+print("Symbols: " + str(x.countChar()))
+print("Sentences: " + str(x.countSentence()))

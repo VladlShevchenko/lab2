@@ -1,33 +1,47 @@
-from math import gcd
+import re
 
-class Rational:
-    def __init__(self, numerator = 0, denominator = 1):
+class Text:
+    """Text class with countChar, countWords and countSentence methods"""
+    def __init__(self, filePath):
+        self.filePath = filePath
+        self.symbols = 0
+        self.words = 0
+        self.sentences = 0
 
-        if not denominator:
-            raise ZeroDivisionError("Division by zero!")
+    def countChar(self):
+        """Function that counts amount of symbols in file"""
+        try:
+            file = open(self.filePath, 'r') 
+            for line in file:
+                self.symbols += len(line)
+            file.close()
+            return self.symbols
+        except IOError:
+            raise IOError("File is not found")
 
-        if not isinstance(numerator, int) or not isinstance(denominator, int):
-            raise TypeError("Numerator and denominator must be integer")
+    def countWords(self):
+        """Function that counts amount of words in file"""
+        try:
+            f = open(self.filePath, 'r')
+            for line in f:
+                self.words += len(line.split())
+            f.close()
+            return self.words
+        except IOError:
+            raise IOError("File is not found")
 
-        self.numerator = numerator // gcd(numerator, denominator)
-        self.denominator = denominator // gcd(numerator, denominator)
+    def countSentence(self):
+        """Function that counts amount of sentences in file"""
+        try:
+            f = open(self.filePath, 'r')
+            data = f.read()
+            self.sentences = len(re.split('\. |! |\? |\... ', data))
+            f.close()
+            return self.sentences
+        except IOError:
+            raise IOError("File is not found")
 
-
-    def division(self):
-        return str(self.numerator) + "/" + str(self.denominator)
-
-    def divisionFloat(self):
-        return self.numerator / self.denominator
-
-
-def main():
-    firstFraction = Rational(2, 1)
-    print(firstFraction.division())
-    print(firstFraction.divisionFloat())
-
-    secondFraction = Rational(4, 1)
-    print(secondFraction.division())
-    print(secondFraction.divisionFloat())
-
-
-main()
+x = Text("text.txt")
+print("Words: " + str(x.countWords()))
+print("Symbols: " + str(x.countChar()))
+print("Sentences: " + str(x.countSentence()))

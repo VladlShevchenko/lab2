@@ -1,122 +1,143 @@
 class Product:
-    def __init__(self, price, description, dimension) :
-        self.__price = price
-        self.__description = description
-        self.__dimension = dimension
+    """Product class with getters and setters"""
+    def __init__(self, name, price, description) :
+        self.name = name
+        self.price = price
+        self.description = description
+
+    @property
+    def name(self):
+        return self.name
+
+    @name.setter
+    def name(self, value):
+
+        if not isinstance(value, str):
+            raise TypeError("Product name must be a string")
+
+        if len(value) <= 1:
+            raise ValueError("Product name must contain at least 2 characters")
+
+        self.__name = value
 
     @property
     def price(self):
         return self.__price
-    
+
     @price.setter
-    def set_price(self, price):
-        if(isinstance(price, float) and price > 0.0): 
-            self.__price = price
-        else: 
-            raise Exception("Wrong input type or value")
+    def price(self, value):
+        if not isinstance(value, int) and not isinstance(value, float):
+            raise TypeError("Product price must be a number")
+
+        if value <= 0:
+            raise ValueError("Product price must be a positive number")
+
+        self.__price = value
 
     @property
     def description(self):
         return self.__description
 
     @description.setter
-    def set_description(self, description):
-        if(isinstance(description, str)): 
-            self.__description = description
-        else: 
-            raise Exception("Wrong input type or value")
-    
-    @property
-    def dimension(self):
-        return self.__dimension
+    def description(self, value):
+        if not isinstance(value, str):
+            raise TypeError("Description must be a string")
 
-    @dimension.setter
-    def set_description(self, dimension):
-        if(isinstance(dimension, str)): 
-            self.__description = dimension
-        else: 
-            raise Exception("Wrong input type or value")
+        if not value:
+            raise ValueError("Description must contain text")
 
+        self.__description = value
 
 class Customer:
+    """Customer class with getters and setters"""
     def __init__(self, surname, name, mobilePhone) :
-        self.__surname = surname
-        self.__name = name
-        self.__mobilePhone = mobilePhone
+        self.surname = surname
+        self.name = name
+        self.mobilePhone = mobilePhone
 
     @property
     def surname(self):
         return self.__surname
-    
+
     @surname.setter
-    def set_surname(self, surname):
-        if(isinstance(surname, str)): 
-            self.__price = surname
-        else: 
-            raise Exception("Wrong input type or value")
+    def surname(self, value):
+        if not isinstance(value, str):
+            raise TypeError("Wrong type of surname!")
+
+        if len(value) <= 1:
+            raise ValueError("Surname must contain at least 2 characters")
+
+        self.__surname = value
 
     @property
     def name(self):
         return self.__name
 
     @name.setter
-    def set_name(self, name):
-        if(isinstance(name, str)): 
-            self.__name = name
-        else: 
-            raise Exception("Wrong input type or value")
-    
+    def name(self, value):
+        if not isinstance(value, str):
+            raise TypeError("Customer name must be a string")
+
+        if len(value) <= 1:
+            raise ValueError("Customer name must contain at least 2 characters")
+
+        self.__name = value
+
     @property
     def mobilePhone(self):
         return self.__mobilePhone
 
     @mobilePhone.setter
-    def set_description(self, mobilePhone):
-        if(isinstance(mobilePhone, str)): 
-            self.__description = mobilePhone
-        else: 
-            raise Exception("Wrong input type or value")
+    def mobilePhone(self, value):
+        if not isinstance(value, str):
+            raise TypeError("Wrong type of mobilePhone!")
+
+        if len(value) != 10:
+            raise ValueError("Wrong mobile phone format!")
+
+        self.__mobilePhone = value
 
 class Order:
-    def __init__(self, customer, product) :
-        self.__customer = customer
-        self.__product = product
+    """Order class with add_product, del_product and sum_order methods"""
+    def __init__(self, customer = None, productList = None) :
+        if not isinstance(customer, Customer):
+            raise TypeError("Wrong type of customer!")
+        self.customer = customer
 
-    @property
-    def customer(self):
-        return self.__customer
+        if not all([isinstance(product, Product) for product in productList]) :
+            raise TypeError("Wrong type of product!")
+        self.productList = productList
+
+    def add_product(self, newProduct):
+        """A function that adds product to the total order"""
+        if not isinstance(newProduct, Product):
+            raise TypeError("Wrong type of product!")
+        self.productList.append(newProduct)
+
     
-    @customer.setter
-    def set_customer(self, customer):
-        if(isinstance(customer, Customer)): 
-            self.__customer = customer
-        else: 
-            raise Exception("Wrong input type or value")
+    def del_product(self, product):
+        """A function that delete product from the total order"""
+        if not isinstance(product, Product):
+            raise TypeError
+        self.productList.remove(product)
 
-    @property
-    def product(self):
-        return self.__product
-    
-    @product.setter
-    def set_product(self, product):
-        if(isinstance(product, Product)): 
-            self.__product = product
-        else: 
-            raise Exception("Wrong input type or value")
+    def sum_order(self):
+        """
+        Sum all prices
+        A function that sum price of all products in order
+        """
+        result = 0
+        for product in self.productList:
+            result = result + product.price
+        return result
 
-    def count(self):
-        result = []
-        for y in self.__product:
-            result.append(y.price * y.dimension)
-        return sum(result) 
+    def __str__(self):
+        return f'Customer: {self.customer.name}\nThe total order value:{self.sum_order()}'
 
-
-xiaomi9 = Product(5000, "Xiaomi Redmi Note 9", 2)
-xiaomiMi = Product(13500, "Xiaomi Mi 11 Ultra", 1)
-customer = Customer("Shevchenko", "Vladyslav", 961138687)
-
-listOfProducts = [xiaomi9, xiaomiMi]
-obj3 = Order(customer, listOfProducts)
-obj4 = Order("customer", "price")
-print(customer.name)
-print(obj3.count())
+xiaomi9 = Product("Xiaomi Redmi Note 9", 5000, "Some description")
+xiaomiMi = Product("Xiaomi Mi 11 Ultra", 13500, "Some description")
+customer = Customer("Shevchenko", "Vladyslav", "3961138687")
+listOfProducts = [xiaomi9, xiaomiMi] 
+obj3 = Order(customer, listOfProducts) 
+obj3.add_product(xiaomi9)
+print(obj3)

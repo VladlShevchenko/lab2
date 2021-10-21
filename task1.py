@@ -1,45 +1,45 @@
 class Rectangle:
-    def __init__(self, width = 1, length = 1) :
+    """Rectangle class with getters and setters"""
+    def __init__(self, width = 1.0, length = 1.0) :
         self.__width = width
         self.__length = length
 
     @property
     def width(self):
         return self.__width
-    
-    @width.setter
-    def set_width(self, width):
-        if(0.0 < width < 20.0): 
-            self.__width = width
-        else: 
-            print("Wrong input!")
 
     @property
     def length(self):
         return self.__length
 
+    @width.setter
+    def width(self, width):
+        """Method which set width"""
+        if not isinstance(width, float):
+            raise TypeError("Wrong input type!")
+        if not 0.0 < width < 20.0:
+            raise ValueError("Wrong input value!")
+        self.__width = width
+
     @length.setter
-    def set_length(self, length):
-        if(0.0 <length < 20.0): 
-            self.__length = length
-        else: 
-            print("Wrong input!")
-    
+    def length(self, length):
+        """Method which set length"""
+        if not isinstance(length, float):
+            raise TypeError("Wrong input type!")
+        if not 0.0 < length < 20.0:
+            raise ValueError("Wrong input value!")
+        self.__length = length
+
     def area(self) :
-        return self.__width * self.__length
-
+        return self.width * self.length
     def perimeter(self) :
-        return (self.__width + self.__length) * 2
+        return (self.width + self.length) * 2
 
-rec1 = Rectangle()
-
-result = rec1.perimeter()
-print("Default values:")
-print("Default length is:", rec1.length)
-print("Default width is:", rec1.width)
-print(result)
-
-print("New values length = 3.2 and width = 2.8")
-rec2 = Rectangle(3.2, 2.8)
-print("Area: ", rec2.area())
-print("Perimetr: ", rec2.perimeter())
+rectangle1 = Rectangle()
+rectangle1.width = 3.2
+rectangle1.length = 2.8
+print("Area: ", rectangle1.area())
+print("Perimetr: ", rectangle1.perimeter())
+rectangle2 = Rectangle(3.2, 2.8)
+print("Area: ", rectangle2.area())
+print("Perimetr: ", rectangle2.perimeter())
